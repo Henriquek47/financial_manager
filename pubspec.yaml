@@ -1,0 +1,62 @@
+name: financial_manager
+description: "A new Flutter project."
+ 
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+ 
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.3 <4.0.0'
+
+ 
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  provider: ^6.1.2
+  shared_preferences: ^2.3.3
+  fl_chart: ^0.69.0
+  flutter_screenutil: ^5.9.3
+  http: ^1.2.2
+  flutter_svg: ^2.0.14
+  intl: ^0.18.0
+  mask_text_input_formatter: ^2.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+ 
+  flutter_lints: ^2.0.0
+
+ 
+flutter:
+  fonts:
+    - family: Kodchasan
+      fonts:
+        - asset: assets/fonts/Kodchasan-Light.ttf
+          weight: 400
+        - asset: assets/fonts/Kodchasan-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Kodchasan-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Kodchasan-Bold.ttf
+          weight: 700
+    - family: MontserratAlternates
+      fonts: 
+        - asset: assets/fonts/MontserratAlternates-Light.ttf
+          weight: 300
+        - asset: assets/fonts/MontserratAlternates-Medium.ttf
+          weight: 400
+        - asset: assets/fonts/MontserratAlternates-SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/MontserratAlternates-Bold.ttf
+          weight: 700
+ 
+  uses-material-design: true
+  assets:
+    - assets/icons/
+
+ 
