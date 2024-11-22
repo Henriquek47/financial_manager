@@ -4,14 +4,15 @@ import 'package:financial_manager/core/style/text_style_app.dart';
 import 'package:flutter/material.dart';
 
 class DropdownFilterWidget extends StatefulWidget {
-  const DropdownFilterWidget({super.key});
+  final Function(int value) onTap;
+  const DropdownFilterWidget({super.key, required this.onTap});
 
   @override
   State<DropdownFilterWidget> createState() => _DropdownFilterWidgetState();
 }
 
 class _DropdownFilterWidgetState extends State<DropdownFilterWidget> {
-    Map<int, String> filter = {1: 'Semanal', 2: 'Mensal', 3: 'Anual'};
+    Map<int, String> filter = {0: 'Semanal', 1: 'Mensal', 2: 'Anual'};
  
 
 
@@ -59,6 +60,7 @@ class _DropdownFilterWidgetState extends State<DropdownFilterWidget> {
               (entry) => entry.key == value,
             );
           });
+          widget.onTap.call(value!);
         },
       ),
     );

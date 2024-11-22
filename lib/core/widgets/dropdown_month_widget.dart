@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class DropdownMonthWidget extends StatefulWidget {
   final int selected;
-  const DropdownMonthWidget({super.key, required this.selected});
+  final Function(int month) onTap;
+  const DropdownMonthWidget({super.key, required this.selected, required this.onTap});
 
   @override
   State<DropdownMonthWidget> createState() => _DropdownMonthWidgetState();
@@ -72,6 +73,7 @@ class _DropdownMonthWidgetState extends State<DropdownMonthWidget> {
             _selected = months.entries.firstWhere(
               (entry) => entry.key == value,
             );
+            widget.onTap.call(_selected!.key);
           });
         },
       ),

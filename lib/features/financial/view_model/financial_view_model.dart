@@ -25,6 +25,8 @@ class FinancialViewModel extends ChangeNotifier {
 
   GraphModel? get graphModel => _graphModel;
 
+  SelectFilterGraph selectFilterGraph = SelectFilterGraph.weekly;
+
   Future<StatusResult> getUser() async {
     try {
       _user = await userService.getUser();
@@ -35,10 +37,10 @@ class FinancialViewModel extends ChangeNotifier {
     }
   }
 
-  Future<StatusResult> getSummaryData() async {
+  Future<StatusResult> getSummaryData(int month) async {
     try {
       if (user == null) return StatusResult.failure(doNotShow: true);
-      _summary = await financialService.getSummaryData(user!.id);
+      _summary = await financialService.getSummaryData(user!.id, month);
       notifyListeners();
       return StatusResult.success(doNotShow: true);
     } catch (e) {
@@ -46,14 +48,20 @@ class FinancialViewModel extends ChangeNotifier {
     }
   }
 
-  Future<StatusResult> getFinancialGraph() async {
+  Future<StatusResult> getFinancialGraph(SelectFilterGraph selectMode) async {
     try {
       if (user == null) return StatusResult.failure(doNotShow: true);
-      _graphModel = await financialService.getFinancialGraph(user!.id);
+      _graphModel = await financialService.getFinancialGraph(user!.id, selectMode.name);
       notifyListeners();
       return StatusResult.success(doNotShow: true);
     } catch (e) {
       return StatusResult.failure(doNotShow: true);
     }
   }
+}
+
+enum SelectFilterGraph{
+  weekly,
+  monthly,
+  yearly
 }

@@ -27,7 +27,7 @@ class CategoryTotalSpentWidget extends StatelessWidget {
         const Spacer(),
         category.totalSpent != null
             ? Text(
-                'R\$ ${category.totalSpent}',
+                'R\$ ${category.totalSpent?.toStringAsFixed(2)}',
                 style: context.textStyles.bodyTextSemiBold.copyWith(
                     fontSize: 11.appFont,
                     color: category.receipt()

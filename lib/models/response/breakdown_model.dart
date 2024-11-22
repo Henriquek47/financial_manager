@@ -7,7 +7,7 @@ class BreakdownModel {
 factory BreakdownModel.fromMap(Map<String, dynamic> map) {
     return BreakdownModel(
       period: map['period'],
-      totalSpent: map['totalSpent']
+      totalSpent: map['totalSpent'].toDouble()
     );
   }
 

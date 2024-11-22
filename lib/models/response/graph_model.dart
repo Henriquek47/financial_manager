@@ -17,6 +17,7 @@ class GraphModel {
   }
 
   factory GraphModel.fromJson(Map<String, dynamic> json) {
+    print(json);
     return GraphModel(
       total: json['total']?.toDouble() ?? 0.0,
       breakdown: (json['breakdown'] as List<dynamic>?)?.map((resultJson) {

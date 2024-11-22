@@ -58,6 +58,7 @@ class PaymentViewModel extends ChangeNotifier {
 
   Future<StatusResult> getCategories(String userId) async {
     try {
+      categories.clear();
       categories.addAll(await categoryRepository.getCategories(userId));
       notifyListeners();
       return StatusResult.success(doNotShow: true);

@@ -1,19 +1,22 @@
 import 'package:financial_manager/core/responsive/responsive_extension.dart';
 import 'package:financial_manager/core/style/text_style_app.dart';
+import 'package:financial_manager/models/response/breakdown_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class _BarChart extends StatelessWidget {
-  const _BarChart();
+  final List<BreakdownModel> breakdown;
+
+  const _BarChart(this.breakdown);
 
   @override
   Widget build(BuildContext context) {
     return BarChart(
       BarChartData(
         barTouchData: barTouchData,
-        titlesData: titlesData(context),
+        titlesData: titlesData(context, breakdown),
         borderData: borderData,
-        barGroups: barGroups,
+        barGroups: barGroups(breakdown),
         gridData: const FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
         maxY: 20,
@@ -44,50 +47,28 @@ class _BarChart extends StatelessWidget {
         ),
       );
 
-  Widget getTitles(double value, TitleMeta meta, BuildContext context) {
-    final style = context.textStyles.bodyTextDescription.copyWith(fontSize: 12.appAdaptive);
-    String text;
-    switch (value.toInt()) {
-      case 0:
-        text = 'Mn';
-        break;
-      case 1:
-        text = 'Te';
-        break;
-      case 2:
-        text = 'Wd';
-        break;
-      case 3:
-        text = 'Tu';
-        break;
-      case 4:
-        text = 'Fr';
-        break;
-      case 5:
-        text = 'St';
-        break;
-      case 6:
-        text = 'Sn';
-        break;
-      default:
-        text = '';
-        break;
-    }
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      space: 4,
-      child: Text(text, style: style),
-    );
-  }
-
-  FlTitlesData  titlesData(BuildContext context) => FlTitlesData(
+  FlTitlesData titlesData(BuildContext context, List<BreakdownModel> list) =>
+      FlTitlesData(
         show: true,
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            getTitlesWidget: (value, meta) => getTitles(value, meta, context),
-          ),
+              showTitles: true,
+              reservedSize: 30,
+              getTitlesWidget: (value, meta) {
+                if (list[value.toInt()].period.length < 3) {
+                  return Text(
+                    list[value.toInt()].period,
+                    style: context.textStyles.bodyText
+                        .copyWith(fontSize: 10.appFont),
+                  );
+                } else {
+                  return Text(
+                    list[value.toInt()].period.substring(0, 3),
+                    style: context.textStyles.bodyText
+                        .copyWith(fontSize: 10.appFont),
+                  );
+                }
+              }),
         ),
         leftTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
@@ -113,118 +94,33 @@ class _BarChart extends StatelessWidget {
         end: Alignment.topCenter,
       );
 
-  List<BarChartGroupData> get barGroups => [
-        BarChartGroupData(
-          x: 0,
+  List<BarChartGroupData> barGroups(List<BreakdownModel> list) => list
+      .asMap()
+      .entries
+      .map(
+        (entry) => BarChartGroupData(
+          x: entry.key,
           barRods: [
             BarChartRodData(
-              width: 30.appWidth,
+              width: 20.appWidth,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.appAdaptive),
-                topRight: Radius.circular(12.appAdaptive),
+                topLeft: Radius.circular(8.appAdaptive),
+                topRight: Radius.circular(8.appAdaptive),
               ),
-              toY: 8,
+              toY: entry.value.totalSpent,
               gradient: _barsGradient,
             )
           ],
           showingTooltipIndicators: [0],
         ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [
-            BarChartRodData(
-              width: 30.appWidth,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.appAdaptive),
-                topRight: Radius.circular(12.appAdaptive),
-              ),
-              toY: 10,
-               
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 2,
-          barRods: [
-            BarChartRodData(
-              width: 30.appWidth,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.appAdaptive),
-                topRight: Radius.circular(12.appAdaptive),
-              ),
-              toY: 14,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [
-            BarChartRodData(
-              width: 30.appWidth,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.appAdaptive),
-                topRight: Radius.circular(12.appAdaptive),
-              ),
-              toY: 15,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 4,
-          barRods: [
-            BarChartRodData(
-              width: 30.appWidth,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.appAdaptive),
-                topRight: Radius.circular(12.appAdaptive),
-              ),
-              toY: 13,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [
-            BarChartRodData(
-              width: 30.appWidth,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.appAdaptive),
-                topRight: Radius.circular(12.appAdaptive),
-              ),
-              toY: 10,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 6,
-          barRods: [
-            BarChartRodData(
-              width: 30.appWidth,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.appAdaptive),
-                topRight: Radius.circular(12.appAdaptive),
-              ),
-              toY: 16,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-      ];
+      )
+      .toList();
 }
 
 class GraphWidget extends StatefulWidget {
-  const GraphWidget({super.key});
+  final List<BreakdownModel> breakdown;
+
+  const GraphWidget({super.key, required this.breakdown});
 
   @override
   State<StatefulWidget> createState() => GraphWidgetState();
@@ -233,9 +129,9 @@ class GraphWidget extends StatefulWidget {
 class GraphWidgetState extends State<GraphWidget> {
   @override
   Widget build(BuildContext context) {
-    return const AspectRatio(
+    return AspectRatio(
       aspectRatio: 1.9,
-      child: _BarChart(),
+      child: _BarChart(widget.breakdown),
     );
   }
 }

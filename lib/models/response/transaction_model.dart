@@ -20,7 +20,6 @@ class TransactionModel {
   });
 
   factory TransactionModel.fromMap(Map<String, dynamic> map) {
-    print(map);
     return TransactionModel(
       id: map['id'],
       value: double.parse(map['value']),

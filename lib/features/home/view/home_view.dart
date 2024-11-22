@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView> {
     Future.microtask(
       () async {
         await homeViewModel.getUser();
-        await homeViewModel.getSummaryData();
+        await homeViewModel.getSummaryData(DateTime.now().month);
         await homeViewModel.getTransactions();
       },
     );
@@ -53,6 +53,9 @@ class _HomeViewState extends State<HomeView> {
                 showTitle: true,
                 categories: homeViewModel.summary?.categories ?? [],
                 total: homeViewModel.summary?.total ?? 0,
+                onTap: (month) async{
+                  await homeViewModel.getSummaryData(month);
+                },
               ),
               SizedBox(
                 height: 16.appHeight,

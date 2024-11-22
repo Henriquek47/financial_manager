@@ -13,10 +13,11 @@ class FinancialRepository extends ChangeNotifier {
 
   FinancialRepository({required this.apiClient});
 
-  Future<SummaryModel> getSummaryData(String userId, String token) async {
+  Future<SummaryModel> getSummaryData(String userId, String token, int month) async {
     try {
       final response = await apiClient.getData(
         '${Endpoints.getSummary}/$userId',
+        queryParams: {"month": month.toString()},
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -29,10 +30,11 @@ class FinancialRepository extends ChangeNotifier {
     }
   }
 
-  Future<GraphModel> getFinancialGraph(String userId, String token) async {
+  Future<GraphModel> getFinancialGraph(String userId, String token, String selectedMode) async {
     try {
       final response = await apiClient.getData(
         '${Endpoints.financial}/$userId',
+        queryParams: {"period": selectedMode},
         headers: {
           'Authorization': 'Bearer $token',
         },

@@ -25,8 +25,8 @@ class _FinancialViewState extends State<FinancialView> {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
         await financialViewModel.getUser();
-        await financialViewModel.getSummaryData();
-        await financialViewModel.getFinancialGraph();
+        await financialViewModel.getSummaryData(DateTime.now().month);
+        await financialViewModel.getFinancialGraph(financialViewModel.selectFilterGraph);
       },
     );
     super.initState();
@@ -81,9 +81,12 @@ class _FinancialViewState extends State<FinancialView> {
                     total: financialViewModel.summary?.total ?? 0,
                     showTitle: false,
                     categories: financialViewModel.summary?.categories ?? [],
+                    onTap: (month) async{
+                      await financialViewModel.getSummaryData(month);
+                    },
                   ),
                 ),
-                const CardGraphWidget(),
+                  CardGraphWidget(financialViewModel: financialViewModel,),
                 Container(
                     width: double.maxFinite,
                     color: context.isDarkMode

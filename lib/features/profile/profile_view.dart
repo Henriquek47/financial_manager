@@ -1,7 +1,6 @@
 import 'package:financial_manager/core/responsive/responsive_extension.dart';
 import 'package:financial_manager/core/routes/routes.dart';
 import 'package:financial_manager/core/style/text_style_app.dart';
-import 'package:financial_manager/features/auth/view/sign_up_view.dart';
 import 'package:financial_manager/services/user/user_token_service.dart';
 import 'package:financial_manager/theme/theme_provider.dart';
 import 'package:flutter/material.dart';

@@ -89,7 +89,7 @@ class TransactionListWidget extends StatelessWidget {
                             'R\$ ${transactions[index].value.toStringAsFixed(2)}',
                             style: context.textStyles.bodyTextSemiBold.copyWith(
                                 fontSize: 14.appFont,
-                                color: context.isDarkMode
+                                color: transactions[index].category?.name == null ? Colors.green : context.isDarkMode
                                     ? context.colors.neutralWhite
                                     : context.colors.neutralShade500),
                           ),

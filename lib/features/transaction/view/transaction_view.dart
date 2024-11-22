@@ -1,11 +1,12 @@
 import 'package:financial_manager/core/responsive/responsive_extension.dart';
 import 'package:financial_manager/core/style/colors_app.dart';
 import 'package:financial_manager/core/style/text_style_app.dart';
+import 'package:financial_manager/core/widgets/custom_button_widget.dart';
 import 'package:financial_manager/core/widgets/transaction_list_widget.dart';
-import 'package:financial_manager/models/response/category_model.dart';
-import 'package:financial_manager/models/response/transaction_model.dart';
+import 'package:financial_manager/features/transaction/view_model/transaction_view_model.dart';
 import 'package:financial_manager/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TransactionView extends StatefulWidget {
   const TransactionView({super.key});
@@ -15,97 +16,147 @@ class TransactionView extends StatefulWidget {
 }
 
 class _TransactionViewState extends State<TransactionView> {
-  List<TransactionModel> transactionModels = [
-    TransactionModel(
-      id: '1',
-      value: 100.50,
-      description: 'Compra no supermercado',
-      userId: 'user_01',
-      category: CategoryModel(
-        id: 'cat_5',
-        name: 'Entertainment',
-        image: 'https://example.com/entertainment.jpg',
-        isPublic: false,
-        totalSpent: 100.20,
-        color: '#FF33A6',
-      ),
-      createdAt: DateTime.now().subtract(Duration(days: 5)),
-      receiverId: 'receiver_01',
-    ),
-    TransactionModel(
-      id: '2',
-      value: 200.75,
-      description: 'Pagamento de aluguel',
-      userId: 'user_02',
-      category: CategoryModel(
-        id: 'cat_5',
-        name: 'Entertainment',
-        image: 'https://example.com/entertainment.jpg',
-        isPublic: false,
-        totalSpent: 100.20,
-        color: '#FF33A6',
-      ),
-      createdAt: DateTime.now().subtract(Duration(days: 4)),
-      receiverId: 'receiver_02',
-    ),
-    TransactionModel(
-      id: '3',
-      value: 50.25,
-      description: 'Compra de gasolina',
-      userId: 'user_03',
-      category: CategoryModel(
-        id: 'cat_5',
-        name: 'Entertainment',
-        image: 'https://example.com/entertainment.jpg',
-        isPublic: false,
-        totalSpent: 100.20,
-        color: '#FF33A6',
-      ),
-      createdAt: DateTime.now().subtract(Duration(days: 3)),
-      receiverId: 'receiver_03',
-    ),
-    TransactionModel(
-      id: '4',
-      value: 1500.00,
-      description: 'Pagamento de salário',
-      userId: 'user_04',
-      category: CategoryModel(
-        id: 'cat_5',
-        name: 'Entertainment',
-        image: 'https://example.com/entertainment.jpg',
-        isPublic: false,
-        totalSpent: 100.20,
-        color: '#FF33A6',
-      ),
-      createdAt: DateTime.now().subtract(Duration(days: 2)),
-      receiverId: 'receiver_04',
-    ),
-    TransactionModel(
-      id: '5',
-      value: 75.00,
-      description: 'Jantar com amigos',
-      userId: 'user_05',
-      category: CategoryModel(
-        id: 'cat_5',
-        name: 'Entertainment',
-        image: 'https://example.com/entertainment.jpg',
-        isPublic: false,
-        totalSpent: 100.20,
-        color: '#FF33A6',
-      ),
-      createdAt: DateTime.now().subtract(Duration(days: 1)),
-      receiverId: 'receiver_05',
-    ),
-  ];
+  late TransactionViewModel transactionViewModel;
+
+  @override
+  void initState() {
+    transactionViewModel = context.read<TransactionViewModel>();
+    Future.microtask(
+      () async {
+        await transactionViewModel.getUser();
+        await transactionViewModel.getTransactions();
+      },
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    transactionViewModel = context.watch<TransactionViewModel>();
     return Scaffold(
       appBar: AppBar(
-                backgroundColor: context.isDarkMode ? context.colors.neutralShade600 :context.colors.neutralWhite,
-
+        backgroundColor: context.isDarkMode
+            ? context.colors.neutralShade600
+            : context.colors.neutralWhite,
         title: Text('Transações', style: context.textStyles.bodyTextSemiBold),
         centerTitle: true,
         leading: const SizedBox.shrink(),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => Dialog(
+                  backgroundColor: context.isDarkMode
+                      ? context.colors.neutralShade600
+                      : context.colors.neutralWhite,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: 16.appHeight, horizontal: 16.appWidth),
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: ValueListenableBuilder(
+                        valueListenable: transactionViewModel.selectedValue,
+                        builder: (context, value, _) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Ordernar por:',
+                                  style: context.textStyles.bodyText
+                                      .copyWith(fontSize: 16.appFont)),
+                              SizedBox(
+                                height: 16.appHeight,
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: 0,
+                                      groupValue: value,
+                                      onChanged: (value) {
+                                        transactionViewModel
+                                            .selectedValue.value = value ?? 0;
+                                      },
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap),
+                                  Text(
+                                    'Todos',
+                                    style: context.textStyles.bodyText
+                                        .copyWith(fontSize: 14.appFont),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: 1,
+                                      groupValue: value,
+                                      onChanged: (value) {
+                                        transactionViewModel
+                                            .selectedValue.value = value ?? 0;
+                                      },
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap),
+                                  Text(
+                                    'Valor',
+                                    style: context.textStyles.bodyText
+                                        .copyWith(fontSize: 14.appFont),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: 2,
+                                      groupValue: value,
+                                      onChanged: (value) {
+                                        transactionViewModel
+                                            .selectedValue.value = value ?? 0;
+                                      },
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap),
+                                  Text(
+                                    'Data',
+                                    style: context.textStyles.bodyText
+                                        .copyWith(fontSize: 14.appFont),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 12.appHeight,),
+                              CustomButtonWidget(
+                                height: 50.appHeight,
+                                width: double.maxFinite,
+                                onPressed: () async {
+                                  final navigator = Navigator.of(context);
+                                  if (value == 0) {
+                                    transactionViewModel.sortByDate = null;
+                                    transactionViewModel.sortByValue = null;
+                                  } else if (value == 1) {
+                                    transactionViewModel.sortByValue = 'asc';
+                                  } else {
+                                    transactionViewModel.sortByDate = 'asc';
+                                  }
+                                  transactionViewModel.transactions.clear();
+                                  await transactionViewModel.getTransactions();
+                                  navigator.pop();
+                                },
+                                backgroundColor: context.colors.primary,
+                                label: 'Ordenar',
+                              ),
+                            ],
+                          );
+                        }),
+                  ),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.filter_alt_outlined,
+              color: context.isDarkMode
+                  ? context.colors.neutralWhite
+                  : context.colors.neutralShade500,
+            ),
+          )
+        ],
       ),
       body: Stack(
         children: [
@@ -133,8 +184,13 @@ class _TransactionViewState extends State<TransactionView> {
               margin: EdgeInsets.symmetric(vertical: 12.appHeight),
               padding: EdgeInsets.symmetric(
                   vertical: 16.appHeight, horizontal: 16.appWidth),
-              color: context.isDarkMode ? context.colors.neutralShade600 : context.colors.neutralWhite,
-              child: TransactionListWidget(transactions: transactionModels, showTitle: false,)),
+              color: context.isDarkMode
+                  ? context.colors.neutralShade600
+                  : context.colors.neutralWhite,
+              child: TransactionListWidget(
+                transactions: transactionViewModel.transactions,
+                showTitle: false,
+              )),
         ],
       ),
     );

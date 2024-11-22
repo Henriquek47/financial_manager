@@ -10,19 +10,19 @@ class FinancialService extends ChangeNotifier {
 
   FinancialService({required this.financialRepository});
 
-  Future<SummaryModel> getSummaryData(String userId) async {
+  Future<SummaryModel> getSummaryData(String userId, int month) async {
     try {
       final token = await UserTokenService.instance.getToken();
-      return await financialRepository.getSummaryData(userId, token ?? '');
+      return await financialRepository.getSummaryData(userId, token ?? '', month);
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<GraphModel> getFinancialGraph(String userId) async {
+  Future<GraphModel> getFinancialGraph(String userId, String selectMode) async {
     try {
       final token = await UserTokenService.instance.getToken();
-      return await financialRepository.getFinancialGraph(userId, token ?? '');
+      return await financialRepository.getFinancialGraph(userId, token ?? '', selectMode);
     } catch (e) {
       rethrow;
     }

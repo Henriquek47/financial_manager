@@ -11,11 +11,13 @@ class SummaryWidget extends StatefulWidget {
   final bool showTitle;
   final double total;
   final List<CategoryModel> categories;
+  final Function(int month) onTap;
   const SummaryWidget(
       {super.key,
       required this.showTitle,
       required this.categories,
-      required this.total});
+      required this.total,
+      required this.onTap});
 
   @override
   State<SummaryWidget> createState() => _SummaryWidgetState();
@@ -47,15 +49,26 @@ class _SummaryWidgetState extends State<SummaryWidget> {
         ],
         widget.categories.isEmpty
             ? Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.appHeight),
-                  child: Text(
-                    'Você não possui transações suficientes',
-                    textAlign: TextAlign.center,
-                    style: context.textStyles.bodyTextSemiBold.copyWith(
-                      fontSize: 12.appFont,
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: DropdownMonthWidget(
+                            selected: 0,
+                            onTap: (month) => widget.onTap.call(month),
+                          ),
                     ),
-                  ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12.appHeight),
+                      child: Text(
+                        'Nada por aqui',
+                        textAlign: TextAlign.center,
+                        style: context.textStyles.bodyTextSemiBold.copyWith(
+                          fontSize: 12.appFont,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               )
             : Padding(
@@ -75,7 +88,7 @@ class _SummaryWidgetState extends State<SummaryWidget> {
                                   .copyWith(height: 1, fontSize: 12.appFont),
                             ),
                             Text(
-                              'R\$ ${widget.total}',
+                              'R\$ ${widget.total.toStringAsFixed(2)}',
                               style:
                                   context.textStyles.bodyTextSemiBold.copyWith(
                                 fontSize: 18.appFont,
@@ -92,8 +105,9 @@ class _SummaryWidgetState extends State<SummaryWidget> {
                           ],
                         ),
                         const Spacer(),
-                        const DropdownMonthWidget(
+                        DropdownMonthWidget(
                           selected: 0,
+                          onTap: (month) => widget.onTap.call(month),
                         ),
                       ],
                     ),

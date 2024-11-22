@@ -95,7 +95,7 @@ class _CardSummaryWidgetState extends State<CardSummaryWidget> {
                 .copyWith(fontSize: 20.appFont, height: 1),
           ),
           Text(
-            'Total gasto: R\$ ${widget.user?.expenses ?? 0}',
+            'Total gasto: R\$ ${(widget.user?.expenses ?? 0).toStringAsFixed(2)}',
             style: context.textStyles.bodyText.copyWith(
               color: context.isDarkMode
                   ? context.colors.neutralShade300

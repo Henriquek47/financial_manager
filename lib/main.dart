@@ -4,6 +4,7 @@ import 'package:financial_manager/features/auth/view_model/auth_view_model.dart'
 import 'package:financial_manager/features/financial/view_model/financial_view_model.dart';
 import 'package:financial_manager/features/home/view_model/home_view_model.dart';
 import 'package:financial_manager/features/payment/view_model/payment_view_model.dart';
+import 'package:financial_manager/features/transaction/view_model/transaction_view_model.dart';
 import 'package:financial_manager/repositories/category_repository.dart';
 import 'package:financial_manager/repositories/financial_repository.dart';
 import 'package:financial_manager/repositories/payment_repository.dart';
@@ -46,6 +47,9 @@ void main() async {
                 FinancialService(financialRepository: context.read())),
         ChangeNotifierProvider(
             create: (context) => HomeViewModel(
+                financialService: context.read(), userService: context.read())),
+                 ChangeNotifierProvider(
+            create: (context) => TransactionViewModel(
                 financialService: context.read(), userService: context.read())),
         ChangeNotifierProvider(
             create: (context) => FinancialViewModel(
