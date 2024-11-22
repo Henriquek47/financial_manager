@@ -39,6 +39,7 @@ class TransactionListWidget extends StatelessWidget {
           child: ListView.builder(
             itemCount: transactions.length,
             shrinkWrap: true,
+            reverse: true,
             itemBuilder: (context, index) {
               return Column(
                 children: [

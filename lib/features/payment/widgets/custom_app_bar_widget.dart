@@ -3,6 +3,7 @@ import 'package:financial_manager/core/responsive/responsive_extension.dart';
 import 'package:financial_manager/core/style/colors_app.dart';
 import 'package:financial_manager/core/style/text_style_app.dart';
 import 'package:financial_manager/core/widgets/icon_svg_widget.dart';
+import 'package:financial_manager/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
@@ -20,7 +21,7 @@ class CustomAppBarWidget extends StatelessWidget {
             vertical: 16.appHeight, horizontal: 16.appWidth),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100.appAdaptive),
-            color: context.colors.neutralShade600),
+            color:context.isDarkMode ? context.colors.neutralShade600 : context.colors.neutralWhite),
         child: Stack(
           alignment: Alignment.center,
           children: [

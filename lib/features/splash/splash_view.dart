@@ -1,3 +1,4 @@
+import 'package:financial_manager/core/constants/assets.dart';
 import 'package:financial_manager/core/routes/routes.dart';
 import 'package:financial_manager/features/splash/view_model/splash_view_model.dart';
 import 'package:flutter/material.dart';
@@ -36,9 +37,11 @@ class _SplashViewState extends State<SplashView> {
     return Scaffold(
       body: Center(
         child: Container(
-          color: Colors.red,
-          height: 100,
+           height: 100,
           width: 100,
+          decoration: const BoxDecoration(
+            image: DecorationImage(image: AssetImage(Assets.logo), fit: BoxFit.cover)
+          ),
         ),
       ),
     );

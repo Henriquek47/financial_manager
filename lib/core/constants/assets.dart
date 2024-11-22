@@ -7,6 +7,5 @@ class Assets {
   static const String home = 'assets/icons/home.svg';
   static const String graph = 'assets/icons/graph.svg';
   static const String coin = 'assets/icons/coin.svg';
-  
- 
+  static const String logo = 'assets/images/logo.png';
 }

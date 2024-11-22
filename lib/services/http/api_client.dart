@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 class ApiClient extends ChangeNotifier {
   final Map<String, String> _mainHeaders = {"Content-Type": "application/json"};
 
-  final String url = 'http://192.168.242.20:3333';
+  final String url = 'http://192.168.242.20:3334'; //'https://financial-manager-api-production.up.railway.app';
 
   final String activeChallenges = '/getActiveChallenges';
 
