@@ -13,110 +13,112 @@ class TransactionListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if(showTitle)...[Text(
-          'Transações',
-          style: context.textStyles.bodyTextSemiBold,
-        ),
-        SizedBox(
-          height: 8.appHeight,
-        ),],
-        transactions.isEmpty ? Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 54.appHeight),
-                  child: Text(
-                    'Nenhuma transação efetuada',
-                    textAlign: TextAlign.center,
-                    style: context.textStyles.bodyTextSemiBold.copyWith(
-                      fontSize: 12.appFont,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if(showTitle)...[Text(
+            'Transações',
+            style: context.textStyles.bodyTextSemiBold,
+          ),
+          SizedBox(
+            height: 8.appHeight,
+          ),],
+          transactions.isEmpty ? Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 54.appHeight),
+                    child: Text(
+                      'Nenhuma transação efetuada',
+                      textAlign: TextAlign.center,
+                      style: context.textStyles.bodyTextSemiBold.copyWith(
+                        fontSize: 12.appFont,
+                      ),
                     ),
                   ),
-                ),
-              ) : Padding(
-          padding: EdgeInsets.only(left: showTitle ? 16.appWidth : 0),
-          child: ListView.builder(
-            itemCount: transactions.length,
-            shrinkWrap: true,
-            reverse: true,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: context.isDarkMode
-                            ? context.colors.neutralShade550
-                            : context.colors.neutralShade400,
-                        radius: 20.appAdaptive,
-                      ),
-                      SizedBox(
-                        width: 12.appWidth,
-                      ),
-                      Expanded(
-                        flex: 3,
-                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                ) : Padding(
+            padding: EdgeInsets.only(left: showTitle ? 16.appWidth : 0),
+            child: ListView.builder(
+              itemCount: transactions.length,
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: context.isDarkMode
+                              ? context.colors.neutralShade550
+                              : context.colors.neutralShade400,
+                          radius: 20.appAdaptive,
+                        ),
+                        SizedBox(
+                          width: 12.appWidth,
+                        ),
+                        Expanded(
+                          flex: 3,
+                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                transactions[index].category?.name ?? 'Recebimento',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style:
+                                    context.textStyles.bodyTextSemiBold.copyWith(
+                                  fontSize: 14.appFont,
+                                  color: context.isDarkMode
+                                      ? context.colors.neutralWhite
+                                      : context.colors.neutralShade500,
+                                ),
+                              ),
+                              Text(
+                                transactions[index].description ??
+                                    'Sem descrição',
+                                overflow: TextOverflow.ellipsis,
+                                style: context.textStyles.bodyText.copyWith(
+                                  fontSize: 11.appFont,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              transactions[index].category?.name ?? 'Recebimento',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style:
-                                  context.textStyles.bodyTextSemiBold.copyWith(
-                                fontSize: 14.appFont,
-                                color: context.isDarkMode
-                                    ? context.colors.neutralWhite
-                                    : context.colors.neutralShade500,
-                              ),
+                              'R\$ ${transactions[index].value.toStringAsFixed(2)}',
+                              style: context.textStyles.bodyTextSemiBold.copyWith(
+                                  fontSize: 14.appFont,
+                                  color: transactions[index].category?.name == null ? Colors.green : context.isDarkMode
+                                      ? context.colors.neutralWhite
+                                      : context.colors.neutralShade500),
                             ),
                             Text(
-                              transactions[index].description ??
-                                  'Sem descrição',
+                              DateFormat('d MMMM yyyy')
+                                  .format(transactions[index].createdAt),
                               overflow: TextOverflow.ellipsis,
-                              style: context.textStyles.bodyText.copyWith(
-                                fontSize: 11.appFont,
-                              ),
+                              style: context.textStyles.bodyText
+                                  .copyWith(fontSize: 11.appFont),
                             ),
                           ],
-                        ),
-                      ),
-                      const Spacer(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'R\$ ${transactions[index].value.toStringAsFixed(2)}',
-                            style: context.textStyles.bodyTextSemiBold.copyWith(
-                                fontSize: 14.appFont,
-                                color: transactions[index].category?.name == null ? Colors.green : context.isDarkMode
-                                    ? context.colors.neutralWhite
-                                    : context.colors.neutralShade500),
-                          ),
-                          Text(
-                            DateFormat('d MMMM yyyy')
-                                .format(transactions[index].createdAt),
-                            overflow: TextOverflow.ellipsis,
-                            style: context.textStyles.bodyText
-                                .copyWith(fontSize: 11.appFont),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  Divider(
-                    color: context.isDarkMode
-                        ? context.colors.neutralShade550
-                        : context.colors.neutralShade200,
-                    height: 24.appHeight,
-                  ),
-                ],
-              );
-            },
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: context.isDarkMode
+                          ? context.colors.neutralShade550
+                          : context.colors.neutralShade200,
+                      height: 24.appHeight,
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

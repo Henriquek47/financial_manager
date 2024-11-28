@@ -26,6 +26,7 @@ class _FinancialViewState extends State<FinancialView> {
       (timeStamp) async {
         await financialViewModel.getUser();
         await financialViewModel.getSummaryData(DateTime.now().month);
+        financialViewModel.selectFilterGraph = SelectFilterGraph.weekly;
         await financialViewModel.getFinancialGraph(financialViewModel.selectFilterGraph);
       },
     );

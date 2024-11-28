@@ -6,30 +6,31 @@ import 'package:flutter/material.dart';
 
 class _BarChart extends StatelessWidget {
   final List<BreakdownModel> breakdown;
+  final double maxValue;
 
-  const _BarChart(this.breakdown);
+  const _BarChart(this.breakdown, this.maxValue);
 
   @override
   Widget build(BuildContext context) {
     return BarChart(
       BarChartData(
-        barTouchData: barTouchData,
+        barTouchData: barTouchData(),
         titlesData: titlesData(context, breakdown),
         borderData: borderData,
         barGroups: barGroups(breakdown),
-        gridData: const FlGridData(show: false),
+        gridData: const FlGridData(show: true),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 10000, // Definindo maxY dinamicamente
+        maxY: maxValue,
       ),
+      swapAnimationDuration: const Duration(milliseconds: 0),
     );
   }
 
-  BarTouchData get barTouchData => BarTouchData(
-        enabled: false,
+  BarTouchData barTouchData() => BarTouchData(
+        enabled: true,
         touchTooltipData: BarTouchTooltipData(
-          getTooltipColor: (group) => Colors.transparent,
-          tooltipPadding: EdgeInsets.zero,
-          tooltipMargin: 8,
+          getTooltipColor: (group) => Colors.white,
+          tooltipPadding: EdgeInsets.all(8.appAdaptive),
           getTooltipItem: (
             BarChartGroupData group,
             int groupIndex,
@@ -37,11 +38,8 @@ class _BarChart extends StatelessWidget {
             int rodIndex,
           ) {
             return BarTooltipItem(
-              rod.toY.round().toString(),
-              const TextStyle(
-                color: Colors.transparent,
-                fontWeight: FontWeight.bold,
-              ),
+              'R\$ ${rod.toY.round()}',
+                 TextStyle(color: Colors.blue, fontSize: 12.appFont, fontWeight: FontWeight.bold),
             );
           },
         ),
@@ -94,27 +92,28 @@ class _BarChart extends StatelessWidget {
         end: Alignment.topCenter,
       );
 
-  List<BarChartGroupData> barGroups(List<BreakdownModel> list) => list
-      .asMap()
-      .entries
-      .map(
-        (entry) => BarChartGroupData(
-          x: entry.key,
-          barRods: [
-            BarChartRodData(
-              width: 20.appWidth,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8.appAdaptive),
-                topRight: Radius.circular(8.appAdaptive),
-              ),
-              toY: entry.value.totalSpent,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-      )
-      .toList();
+  List<BarChartGroupData> barGroups(List<BreakdownModel> list) => list.isEmpty
+      ? []
+      : list
+          .asMap()
+          .entries
+          .map(
+            (entry) => BarChartGroupData(
+              x: entry.key,
+              barRods: [
+                BarChartRodData(
+                  width: 20.appWidth,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8.appAdaptive),
+                    topRight: Radius.circular(8.appAdaptive),
+                  ),
+                  toY: entry.value.totalSpent,
+                  gradient: _barsGradient,
+                )
+              ],
+            ),
+          )
+          .toList();
 }
 
 class GraphWidget extends StatefulWidget {
@@ -127,11 +126,24 @@ class GraphWidget extends StatefulWidget {
 }
 
 class GraphWidgetState extends State<GraphWidget> {
+  double maxValue = 0;
+
+  @override
+  void didUpdateWidget(covariant GraphWidget oldWidget) {
+    maxValue = 0;
+    for (var element in widget.breakdown) {
+      if (maxValue < element.totalSpent) {
+        maxValue = element.totalSpent;
+      }
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1.9,
-      child: _BarChart(widget.breakdown),
+      child: _BarChart(widget.breakdown, maxValue),
     );
   }
 }

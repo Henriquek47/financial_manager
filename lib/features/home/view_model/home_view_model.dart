@@ -54,7 +54,7 @@ class HomeViewModel extends ChangeNotifier {
       if (user == null) return StatusResult.failure(doNotShow: true);
       final list =
           await financialService.getTransactions(startDate, endDate,
-          categoryId, sortByValue, sortByDate, user!.id, transactions.length);
+          categoryId, sortByValue, "desc", user!.id, transactions.length);
       transactions = [...transactions, ...list];
       notifyListeners();
       return StatusResult.success(doNotShow: true);

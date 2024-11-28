@@ -31,9 +31,10 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ApiClient()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(
             create: (context) => UserRepository(apiClient: context.read())),
-            ChangeNotifierProvider(
+        ChangeNotifierProvider(
             create: (context) => CategoryRepository(apiClient: context.read())),
         ChangeNotifierProvider(
             create: (context) =>
@@ -48,7 +49,7 @@ void main() async {
         ChangeNotifierProvider(
             create: (context) => HomeViewModel(
                 financialService: context.read(), userService: context.read())),
-                 ChangeNotifierProvider(
+        ChangeNotifierProvider(
             create: (context) => TransactionViewModel(
                 financialService: context.read(), userService: context.read())),
         ChangeNotifierProvider(
@@ -56,10 +57,8 @@ void main() async {
                 financialService: context.read(), userService: context.read())),
         ChangeNotifierProvider(
             create: (context) => PaymentViewModel(
-                  paymentRepository: context.read(),
-                  categoryRepository: context.read()
-                )),
-        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+                paymentRepository: context.read(),
+                categoryRepository: context.read())),
         ChangeNotifierProvider(
           create: (context) => AuthRepository(
             apiClient: context.read<ApiClient>(),
@@ -69,9 +68,6 @@ void main() async {
           create: (context) => SplashViewModel(
             authRepository: context.read<AuthRepository>(),
           ),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ThemeProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => AuthViewModel(
@@ -88,7 +84,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext ?context) {
+  Widget build(BuildContext? context) {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,

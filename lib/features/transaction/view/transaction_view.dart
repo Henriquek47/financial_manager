@@ -121,7 +121,9 @@ class _TransactionViewState extends State<TransactionView> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 12.appHeight,),
+                              SizedBox(
+                                height: 12.appHeight,
+                              ),
                               CustomButtonWidget(
                                 height: 50.appHeight,
                                 width: double.maxFinite,
@@ -131,8 +133,10 @@ class _TransactionViewState extends State<TransactionView> {
                                     transactionViewModel.sortByDate = null;
                                     transactionViewModel.sortByValue = null;
                                   } else if (value == 1) {
+                                    transactionViewModel.sortByDate = null;
                                     transactionViewModel.sortByValue = 'asc';
                                   } else {
+                                    transactionViewModel.sortByValue = null;
                                     transactionViewModel.sortByDate = 'asc';
                                   }
                                   transactionViewModel.transactions.clear();
@@ -180,17 +184,18 @@ class _TransactionViewState extends State<TransactionView> {
             ),
           ),
           Container(
-              width: double.maxFinite,
-              margin: EdgeInsets.symmetric(vertical: 12.appHeight),
-              padding: EdgeInsets.symmetric(
-                  vertical: 16.appHeight, horizontal: 16.appWidth),
-              color: context.isDarkMode
-                  ? context.colors.neutralShade600
-                  : context.colors.neutralWhite,
-              child: TransactionListWidget(
-                transactions: transactionViewModel.transactions,
-                showTitle: false,
-              )),
+            width: double.maxFinite,
+            margin: EdgeInsets.symmetric(vertical: 12.appHeight),
+            padding: EdgeInsets.symmetric(
+                vertical: 16.appHeight, horizontal: 16.appWidth),
+            color: context.isDarkMode
+                ? context.colors.neutralShade600
+                : context.colors.neutralWhite,
+            child: TransactionListWidget(
+              transactions: transactionViewModel.transactions,
+              showTitle: false,
+            ),
+          ),
         ],
       ),
     );

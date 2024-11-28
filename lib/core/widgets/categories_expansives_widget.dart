@@ -14,52 +14,7 @@ class CategoriesExpansivesWidget extends StatefulWidget {
 
 class _CategoriesExpansivesWidgetState extends State<CategoriesExpansivesWidget> {
   
-  List<CategoryModel> categories = [
-    CategoryModel(
-      id: 'cat_1',
-      name: 'Technology',
-      image: 'https://example.com/tech.jpg',
-      isPublic: true,
-      totalSpent: 500.00,
-      color: '#FF5733',
-      profit: 12.0
-    ),
-    CategoryModel(
-      id: 'cat_2',
-      name: 'Health',
-      image: 'https://example.com/health.jpg',
-      isPublic: false,
-      totalSpent: 150.75,
-      color: '#33FF57',
-      profit: 12.0
-    ),
-    CategoryModel(
-      id: 'cat_3',
-      name: 'Education',
-      image: 'https://example.com/education.jpg',
-      isPublic: true,
-      totalSpent: 320.40,
-      color: '#3357FF',
-      profit: 12.0
-    ),
-    CategoryModel(
-      id: 'cat_4',
-      name: 'Sports',
-      image: 'https://example.com/sports.jpg',
-      isPublic: true,
-      totalSpent: 250.60,
-      color: '#57FF33',
-      profit: 12.0
-    ),
-    CategoryModel(
-      id: 'cat_5',
-      name: 'Entertainment',
-      image: 'https://example.com/entertainment.jpg',
-      isPublic: false,
-      totalSpent: 100.20,
-      color: '#FF33A6',
-      profit: 12.0
-    ),
+  List<CategoryModel> categories = [ 
   ];
 
   @override
@@ -87,7 +42,7 @@ class _CategoriesExpansivesWidgetState extends State<CategoriesExpansivesWidget>
           ),
          Padding(
           padding: EdgeInsets.only(left: 16.appWidth),
-          child: ListView.builder(
+          child: categories.isNotEmpty ? ListView.builder(
             itemCount: categories.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
@@ -162,7 +117,7 @@ class _CategoriesExpansivesWidgetState extends State<CategoriesExpansivesWidget>
                 ],
               );
             },
-          ),
+          ) : Center(child: Text('Nada por enquanto', style: context.textStyles.bodyText,)),
         ),
       ],
     );
